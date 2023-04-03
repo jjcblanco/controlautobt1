@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                         case MESSAGE_READ:
                             String arduinoMsg = msg.obj.toString(); // Read message from Arduino
+                            textViewInfo.setText("Arduino Message : " + arduinoMsg);
                             switch (arduinoMsg.toLowerCase()) {
                                 case "led is turned on":
                                     imageView.setBackgroundColor(getResources().getColor(R.color.colorOn));
@@ -190,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             break;
                         case "turn off":
                             buttonToggle.setText("Turn On");
-                            // Command to turn off LED on Arduino. Must match with the command in Arduino code
                             cmdText = "<turn off>";
                             break;
                     }
@@ -342,6 +342,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             // Set spot color (alpha/opacity) equal to pitch/roll.
             // this is not a precise grade (pitch/roll can be greater than 1)
             // but it's close enough for the animation effect.
+            //connectedThread.write(String.valueOf(pitch));
+            //connectedThread.write(String.valueOf(roll));
+            if(connectedThread!=null) {
+                connectedThread.write("pitch");
+                connectedThread.write(String.valueOf(pitch));
+                connectedThread.write("roll");
+                connectedThread.write(String.valueOf(roll));
+            }
             if (pitch > 0) {
                 mSpotBottom.setAlpha(pitch);
             } else {
@@ -511,5 +519,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
     }
-}
 }
